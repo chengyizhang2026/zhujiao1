@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: zhujiao
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+        value: YOUR_SUPABASE_URL
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+        value: YOUR_ANON_KEY
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+        value: YOUR_SERVICE_ROLE_KEY
+      - key: DEEPSEEK_API_KEY
+        sync: false
+        value: YOUR_DEEPSEEK_API_KEY
