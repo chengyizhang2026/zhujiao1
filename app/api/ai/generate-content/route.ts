@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server"
 import { deepseek, DEEPSEEK_MODELS } from "@/lib/deepseek/client"
 import { mathLearningPrompt } from "@/lib/deepseek/prompts/math-learning"
+import { englishGrammarPrompt } from "@/lib/deepseek/prompts/english-grammar"
 import { createServerSupabase } from "@/lib/supabase/server"
 
 export async function POST(request: NextRequest) {
@@ -16,12 +17,10 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    const { system, user: userPrompt } = mathLearningPrompt({
-      chapterTitle,
-      knowledgePoint,
-      previousKnowledge,
-      studentLevel: "七年级",
-    })
+    const isEnglish = subject === "english"
+    const { system, user: userPrompt } = isEnglish
+      ? englishGrammarPrompt({ chapterTitle, knowledgePoint })
+      : mathLearningPrompt({ chapterTitle, knowledgePoint, previousKnowledge, studentLevel: "七年级" })
 
     const completion = await deepseek.chat.completions.create({
       model: DEEPSEEK_MODELS.chat,
