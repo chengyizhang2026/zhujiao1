@@ -42,13 +42,15 @@ export default function EnglishPage() {
                 <ChevronRight className="w-4 h-4 text-gray-300" />
               </div>
               <p className="text-xs text-gray-400 mb-2">{mod.topic}</p>
-              <div className="flex flex-wrap gap-1">
+              {mod.reading && <p className="text-xs text-gray-500 mb-1">📖 {mod.reading}</p>}
+              <div className="flex flex-wrap gap-1 mb-2">
                 {mod.grammar.map((g) => (
-                  <span key={g} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
-                    {g}
-                  </span>
+                  <span key={g} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">{g}</span>
                 ))}
               </div>
+              {mod.lessons && (
+                <p className="text-xs text-gray-400">{mod.lessons.length} 个课时</p>
+              )}
             </Link>
           ))}
         </div>
