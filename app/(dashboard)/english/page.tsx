@@ -17,53 +17,64 @@ export default function EnglishPage() {
     <div className="p-4 space-y-4">
       <div className="pt-4">
         <h1 className="text-xl font-bold text-gray-900">🌍 英语</h1>
-        <p className="text-sm text-gray-500 mt-1">外研版 · 七年级上册</p>
+        <p className="text-sm text-gray-500 mt-1">外研版 · 七年级上册（2024新版）</p>
       </div>
 
-      {/* 快捷入口 */}
-      <div className="grid grid-cols-3 gap-2">
-        {ENGLISH_SUB_MODULES.map((mod) => {
-          const Icon = mod.icon
-          return (
-            <Link
-              key={mod.key}
-              href={`/english/${mod.key}`}
-              className="p-3 bg-white rounded-xl border border-gray-100 hover:shadow-sm transition-all text-center"
-            >
-              <div className={`w-8 h-8 ${mod.bg} rounded-lg flex items-center justify-center mx-auto mb-1`}>
-                <Icon className={`w-4 h-4 ${mod.color}`} />
-              </div>
-              <span className="text-xs font-medium text-gray-700">{mod.label}</span>
-            </Link>
-          )
-        })}
-      </div>
-
-      {/* 教材模块 */}
+      {/* 教材单元 — 可点击进入学习 */}
       <div>
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
-          教材模块
+          教材单元
         </h2>
         <div className="space-y-2">
           {ENGLISH_MODULES.map((mod) => (
-            <div
+            <Link
               key={mod.id}
-              className="p-3 bg-white rounded-xl border border-gray-100"
+              href={`/english/grammar?module=${mod.id}&topic=${encodeURIComponent(mod.topic)}&grammar=${encodeURIComponent(mod.grammar[0])}`}
+              className="block p-4 bg-white rounded-xl border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all"
             >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-bold text-green-600">M{mod.moduleNo}</span>
-                <h3 className="text-sm font-semibold text-gray-900">{mod.title}</h3>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-white bg-green-500 w-6 h-6 rounded-full flex items-center justify-center">
+                    {mod.moduleNo === 0 ? "S" : mod.moduleNo}
+                  </span>
+                  <h3 className="text-sm font-semibold text-gray-900">{mod.title}</h3>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-300" />
               </div>
-              <p className="text-xs text-gray-400">{mod.topic}</p>
-              <div className="flex flex-wrap gap-1 mt-2">
+              <p className="text-xs text-gray-400 mb-2">{mod.topic}</p>
+              <div className="flex flex-wrap gap-1">
                 {mod.grammar.map((g) => (
                   <span key={g} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">
                     {g}
                   </span>
                 ))}
               </div>
-            </div>
+            </Link>
           ))}
+        </div>
+      </div>
+
+      {/* 专项练习 */}
+      <div>
+        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          专项练习
+        </h2>
+        <div className="grid grid-cols-3 gap-2">
+          {ENGLISH_SUB_MODULES.map((mod) => {
+            const Icon = mod.icon
+            return (
+              <Link
+                key={mod.key}
+                href={`/english/${mod.key}`}
+                className="p-3 bg-white rounded-xl border border-gray-100 hover:shadow-sm transition-all text-center"
+              >
+                <div className={`w-8 h-8 ${mod.bg} rounded-lg flex items-center justify-center mx-auto mb-1`}>
+                  <Icon className={`w-4 h-4 ${mod.color}`} />
+                </div>
+                <span className="text-xs font-medium text-gray-700">{mod.label}</span>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </div>
