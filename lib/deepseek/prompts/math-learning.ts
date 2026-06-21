@@ -21,7 +21,7 @@ export function mathLearningPrompt(params: {
   "keyPoints": ["重点1", "重点2", "重点3"],
   "commonMistakes": [{"mistake": "常见错误描述", "correction": "正确做法"}],
   "memoryTip": "一句朗朗上口的记忆口诀",
-  "examples": [{"question": "例题", "solution": "详解步骤"}],
+  "examples": [{"question": "例题", "solution": "详解步骤", "svgDiagram": "SVG图形（仅几何题需要，否则为null）"}],
   "realLifeConnection": "这个知识点在生活中的应用或类比",
   "mindMapMermaid": "Mermaid语法格式的思维导图（从本章主题出发，展开当前知识点，连接已学知识）"
 }
@@ -33,11 +33,16 @@ export function mathLearningPrompt(params: {
 - 二级分支展开具体内容（定义、性质、方法、注意事项）
 - 用图标标注重点（🔴重点 ⚠️易错 💡技巧）
 
+## SVG图形
+- 如果知识点涉及几何图形（如正方体展开图、角的概念、线段比较等），在examples中每个例题可附带svgDiagram字段
+- SVG要求：viewBox="0 0 200 200"，黑色描边+浅灰填充，顶点标注字母
+
 ## 重要原则
 - 用通俗易懂的中文解释，避免过度的数学术语堆砌
 - 每个概念都配一个简单例子
 - LaTeX公式用 $ 或 $$ 包裹
-- 讲解长度控制在学生能在10-15分钟内读完`
+- 讲解长度控制在学生能在10-15分钟内读完
+- 几何知识点的例题必须配SVG图形！`
 
   const user = `请为以下知识点生成学习内容：
 

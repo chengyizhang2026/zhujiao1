@@ -30,16 +30,27 @@ export function mathQuestionsPrompt(params: {
     "correctAnswer": "正确答案",
     "explanation": "详细解题步骤（分步骤列出，每步解释原理）",
     "hints": ["提示1：引导思考方向（不给答案）", "提示2：更具体的暗示"],
-    "knowledgeTag": "这道题考察的具体子知识点"
+    "knowledgeTag": "这道题考察的具体子知识点",
+    "svgDiagram": "SVG图形代码（仅当题目涉及几何图形时需要）。要求：viewBox尺寸控制在200x200以内，线条清晰，标注关键点（用字母A/B/C等），颜色用黑色描边+浅灰填充。如题目不涉及图形则为null"
   }
 ]
+
+## SVG图形要求
+- 几何题必须配图！用SVG格式
+- 正方体/长方体：画3D透视草图（三个面可见）
+- 三角形/四边形：标注边长、角度、顶点字母
+- 数轴：画水平线标注关键点和原点
+- 柱体/锥体：画简化的3D示意
+- 线段/角：标注长度和角度符号
+- viewBox统一用"0 0 200 200"
 
 ## 出题原则
 1. 干扰项要合理（反映常见错误认知）
 2. hint要逐步递进，先引导思路再给暗示，绝不直接给答案
 3. 题干清晰，数据合理，计算不繁琐
 4. 每道题都要让学生思考，不能是机械运算
-5. 拔高题要设计"陷阱"或需要仔细审题`
+5. 拔高题要设计"陷阱"或需要仔细审题
+6. 题干中可以用"如图所示（见下图）"，但必须配svgDiagram字段`
 
   const user = `请为以下知识点出题：
 
@@ -79,10 +90,11 @@ export function similarQuestionsPrompt(params: {
     {
       "questionText": "同类型题（换数据/场景，考察同一知识点同一种问法）",
       "questionType": "calculation|fill_blank|multiple_choice",
-      "options": ["A...", "B...", "C...", "D..."],  // 若为选择题
+      "options": ["A...", "B...", "C...", "D..."],
       "correctAnswer": "答案",
       "explanation": "解题步骤",
-      "hints": ["提示1", "提示2"]
+      "hints": ["提示1", "提示2"],
+      "svgDiagram": "SVG图形（几何题必填，非几何题null）"
     }
   ],
   "variantQuestions": [
@@ -92,7 +104,8 @@ export function similarQuestionsPrompt(params: {
       "options": ["A...", "B...", "C...", "D..."],
       "correctAnswer": "答案",
       "explanation": "解题步骤",
-      "hints": ["提示1", "提示2"]
+      "hints": ["提示1", "提示2"],
+      "svgDiagram": "SVG图形（几何题必填，非几何题null）"
     }
   ]
 }
@@ -100,7 +113,9 @@ export function similarQuestionsPrompt(params: {
 ## 出题原则
 - 同类题：只改数据和场景，结构不变，确认学生不是"记住了答案"
 - 变式题：换个角度问，或反过来给答案求条件，测试是否真正理解概念
-- 每种各出2道`
+- 每种各出2道
+- 几何题必须配SVG图形！（要求同上：viewBox 0 0 200 200，黑线灰底，顶点标字母）
+- svgDiagram字段：几何题为SVG代码，非几何题为null`
 
   const user = `学生做错了下面这道题，请生成的"举一反三"题目：
 

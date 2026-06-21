@@ -6,6 +6,7 @@ import { useSessionStore } from "@/store/session-store"
 import { MATH_CHAPTERS } from "@/lib/constants"
 import { ArrowLeft, Play, Loader2, Brain, Lightbulb, AlertTriangle } from "lucide-react"
 import { MermaidRenderer } from "@/components/shared/MermaidRenderer"
+import { SvgRenderer } from "@/components/shared/SvgRenderer"
 
 export function LearnContent() {
   const router = useRouter()
@@ -153,9 +154,10 @@ export function LearnContent() {
             <div className="bg-white rounded-xl border border-gray-100 p-4">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">📝 例题</h2>
               <div className="space-y-4">
-                {learningContent.examples.map((ex: { question: string; solution: string }, i: number) => (
+                {learningContent.examples.map((ex: { question: string; solution: string; svgDiagram?: string }, i: number) => (
                   <div key={i} className="p-3 bg-gray-50 rounded-lg">
                     <p className="text-sm font-medium text-gray-800 mb-2">例{i + 1}：{ex.question}</p>
+                    {ex.svgDiagram && ex.svgDiagram !== "null" && <SvgRenderer svg={ex.svgDiagram} className="mb-2" />}
                     <div className="text-xs text-gray-600 border-t border-gray-200 pt-2 mt-2">
                       <span className="font-medium text-green-600">解：</span>
                       <span dangerouslySetInnerHTML={{ __html: fmt(ex.solution) }} />
