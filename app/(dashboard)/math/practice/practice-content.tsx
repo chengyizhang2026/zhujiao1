@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useSessionStore } from "@/store/session-store"
 import { MATH_CHAPTERS } from "@/lib/constants"
 import { ArrowLeft, Lightbulb, Loader2, CheckCircle, CircleX, ChevronRight, RotateCcw, Target } from "lucide-react"
-import { SvgRenderer } from "@/components/shared/SvgRenderer"
+import { DiagramRenderer } from "@/components/shared/DiagramRenderer"
 
 export function PracticeContent() {
   const router = useRouter()
@@ -294,10 +294,10 @@ export function PracticeContent() {
                 (currentQuestion.question as any).questionText as string}
             </p>
 
-            {/* SVG图形 */}
-            {((currentQuestion.question as any).svgDiagram || (currentQuestion.question as any).svg_diagram) && (
-              <SvgRenderer
-                svg={(currentQuestion.question as any).svgDiagram || (currentQuestion.question as any).svg_diagram}
+            {/* 几何图形 */}
+            {((currentQuestion.question as any).diagram) && (
+              <DiagramRenderer
+                params={(currentQuestion.question as any).diagram}
                 className="mt-3"
               />
             )}

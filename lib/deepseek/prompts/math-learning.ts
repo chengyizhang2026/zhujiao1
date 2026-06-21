@@ -21,7 +21,7 @@ export function mathLearningPrompt(params: {
   "keyPoints": ["重点1", "重点2", "重点3"],
   "commonMistakes": [{"mistake": "常见错误描述", "correction": "正确做法"}],
   "memoryTip": "一句朗朗上口的记忆口诀",
-  "examples": [{"question": "例题", "solution": "详解步骤", "svgDiagram": "SVG图形（仅几何题需要，否则为null）"}],
+  "examples": [{"question": "例题", "solution": "详解步骤", "diagram": "几何图形参数JSON（仅几何题需要，格式：{type:'cube_net'|'triangle'|'number_line'|'angle', ...}，非几何题为null）"}],
   "realLifeConnection": "这个知识点在生活中的应用或类比",
   "mindMapMermaid": "Mermaid语法格式的思维导图（从本章主题出发，展开当前知识点，连接已学知识）"
 }
@@ -33,9 +33,9 @@ export function mathLearningPrompt(params: {
 - 二级分支展开具体内容（定义、性质、方法、注意事项）
 - 用图标标注重点（🔴重点 ⚠️易错 💡技巧）
 
-## ⚠️ SVG图形（必读！）
-几何例题必须附带svgDiagram字段，值为真实SVG代码（禁止placeholder.com等占位图URL）
-SVG规范：viewBox="0 0 200 200"，stroke="black" stroke-width="2"，fill="#f0f0f0"，顶点用大写字母标注
+## 几何图形
+几何例题用diagram字段（JSON参数描述图形，前端自动渲染），禁止图片URL！
+支持类型：cube_net（展开图，faces数组6个字）、triangle（三角形，vertices三个顶点字母）、number_line（数轴）、angle（角）
 
 ## 重要原则
 - 用通俗易懂的中文解释，避免过度的数学术语堆砌

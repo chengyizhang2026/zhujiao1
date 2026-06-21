@@ -31,22 +31,13 @@ export function mathQuestionsPrompt(params: {
     "explanation": "详细解题步骤（分步骤列出，每步解释原理）",
     "hints": ["提示1：引导思考方向（不给答案）", "提示2：更具体的暗示"],
     "knowledgeTag": "这道题考察的具体子知识点",
-    "svgDiagram": "SVG图形代码（仅当题目涉及几何图形时需要）。要求：viewBox尺寸控制在200x200以内，线条清晰，标注关键点（用字母A/B/C等），颜色用黑色描边+浅灰填充。如题目不涉及图形则为null"
+    "diagram": "几何图形描述JSON（仅几何题需要，非几何题为null）。格式：{ type: 'cube_net'|'number_line'|'triangle'|'angle', ...具体参数 }。cube_net: { type:'cube_net', faces:['上','下','左','前','右','后'] }。number_line: { type:'number_line', from:起始, to:结束, points:[{value:位置, label:'标字'}] }。triangle: { type:'triangle', vertices:['A','B','C'], labels:[{side:'AB', label:'5cm'}] }。angle: { type:'angle', vertex:'O', rays:['A','B'], angle:'45°' }。禁止使用任何图片URL！"
   }
 ]
 
-## ⚠️ SVG图形要求（极其重要！）
-几何题必须生成真实SVG代码！禁止使用占位图URL（如placeholder.com）！
-
-SVG规范：
-- viewBox="0 0 200 200"
-- 元素用rect（矩形）、polygon（多边形）、line（直线）、circle（圆）
-- 属性：stroke="black" stroke-width="2" fill="#f0f0f0"
-- 顶点用text元素标注大写字母
-- 正方体展开图示例：画6个相连的正方形，每个用rect元素，中心用text标汉字
-- 三角形示例：用polygon画三点坐标，三个顶点标A、B、C
-
-绝对禁止 placeholder.com 或任何外部图片URL！必须是SVG代码！
+## 几何图形要求
+几何题必须用diagram字段描述图形参数（JSON格式），不要用SVG或图片URL！
+支持类型：cube_net（展开图）、number_line（数轴）、triangle（三角形）、angle（角）
 
 ## 出题原则
 1. 干扰项要合理（反映常见错误认知）
@@ -98,7 +89,7 @@ export function similarQuestionsPrompt(params: {
       "correctAnswer": "答案",
       "explanation": "解题步骤",
       "hints": ["提示1", "提示2"],
-      "svgDiagram": "SVG图形（几何题必填，非几何题null）"
+      "diagram": "几何图形参数JSON（格式同出题要求，非几何题为null）"
     }
   ],
   "variantQuestions": [
@@ -109,7 +100,7 @@ export function similarQuestionsPrompt(params: {
       "correctAnswer": "答案",
       "explanation": "解题步骤",
       "hints": ["提示1", "提示2"],
-      "svgDiagram": "SVG图形（几何题必填，非几何题null）"
+      "diagram": "几何图形参数JSON（格式同出题要求，非几何题为null）"
     }
   ]
 }
@@ -118,8 +109,7 @@ export function similarQuestionsPrompt(params: {
 - 同类题：只改数据和场景，结构不变，确认学生不是"记住了答案"
 - 变式题：换个角度问，或反过来给答案求条件，测试是否真正理解概念
 - 每种各出2道
-- 几何题必须配SVG图形！（要求同上：viewBox 0 0 200 200，黑线灰底，顶点标字母）
-- svgDiagram字段：几何题为SVG代码，非几何题为null`
+- 几何题用diagram字段（JSON参数），不用图片URL`
 
   const user = `学生做错了下面这道题，请生成的"举一反三"题目：
 
