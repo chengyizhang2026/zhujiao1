@@ -295,11 +295,13 @@ export function PracticeContent() {
             </p>
 
             {/* 几何图形 */}
-            {((currentQuestion.question as any).diagram) && (
+            {(currentQuestion.question as any).diagram ? (
               <DiagramRenderer
                 params={(currentQuestion.question as any).diagram}
                 className="mt-3"
               />
+            ) : (
+              <p className="text-xs text-gray-300 mt-1">[diagram: {(currentQuestion.question as any).diagram === null ? "null" : "undefined"}]</p>
             )}
 
             {/* 选择题选项 */}
