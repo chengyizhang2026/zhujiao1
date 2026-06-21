@@ -1,7 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import { ENGLISH_MODULES } from "@/lib/constants"
-import { Languages, ChevronRight, Sparkles, BookOpen, Pencil, Headphones, FileText } from "lucide-react"
+import { ChevronRight, Sparkles, BookOpen, Pencil, Headphones, FileText, ChevronDown, Play } from "lucide-react"
 import Link from "next/link"
 
 const ENGLISH_SUB_MODULES = [
@@ -13,46 +14,72 @@ const ENGLISH_SUB_MODULES = [
 ]
 
 export default function EnglishPage() {
+  const [expanded, setExpanded] = useState<string | null>(null)
+
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4 pb-20">
       <div className="pt-4">
         <h1 className="text-xl font-bold text-gray-900">🌍 英语</h1>
         <p className="text-sm text-gray-500 mt-1">外研版 · 七年级上册（2024新版）</p>
       </div>
 
-      {/* 教材单元 — 可点击进入学习 */}
+      {/* 教材单元 */}
       <div>
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
           教材单元
         </h2>
         <div className="space-y-2">
-          {ENGLISH_MODULES.map((mod) => (
-            <Link
-              key={mod.id}
-              href={`/english/grammar?module=${mod.id}&topic=${encodeURIComponent(mod.topic)}&grammar=${encodeURIComponent(mod.grammar[0])}`}
-              className="block p-4 bg-white rounded-xl border border-gray-100 hover:border-green-200 hover:shadow-sm transition-all"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-white bg-green-500 w-6 h-6 rounded-full flex items-center justify-center">
-                    {mod.moduleNo === 0 ? "S" : mod.moduleNo}
-                  </span>
-                  <h3 className="text-sm font-semibold text-gray-900">{mod.title}</h3>
-                </div>
-                <ChevronRight className="w-4 h-4 text-gray-300" />
+          {ENGLISH_MODULES.map((mod) => {
+            const isOpen = expanded === mod.id
+            return (
+              <div key={mod.id} className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                {/* 单元标题栏 — 点击展开 */}
+                <button
+                  onClick={() => setExpanded(isOpen ? null : mod.id)}
+                  className="w-full p-4 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-white bg-green-500 w-6 h-6 rounded-full flex items-center justify-center">
+                        {mod.moduleNo === 0 ? "S" : mod.moduleNo}
+                      </span>
+                      <h3 className="text-sm font-semibold text-gray-900">{mod.title}</h3>
+                    </div>
+                    <span className="text-gray-300">{isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}</span>
+                  </div>
+                  <p className="text-xs text-gray-400 mb-1">{mod.topic}</p>
+                  <div className="flex flex-wrap gap-1">
+                    {mod.grammar.map((g) => (
+                      <span key={g} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">{g}</span>
+                    ))}
+                  </div>
+                  {mod.lessons && (
+                    <p className="text-xs text-gray-400 mt-2">{mod.lessons.length} 个课时</p>
+                  )}
+                </button>
+
+                {/* 展开后显示课时列表 */}
+                {isOpen && mod.lessons && (
+                  <div className="border-t border-gray-100 px-4 py-3 space-y-2 bg-gray-50">
+                    <p className="text-xs font-semibold text-gray-500 uppercase mb-2">课时安排</p>
+                    {mod.lessons.map((lesson, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm">
+                        <span className="text-xs text-gray-400 w-5">{i + 1}.</span>
+                        <span className="text-gray-700">{lesson}</span>
+                      </div>
+                    ))}
+                    <Link
+                      href={`/english/grammar?module=${mod.id}&topic=${encodeURIComponent(mod.topic)}&grammar=${encodeURIComponent(mod.grammar[0])}`}
+                      className="mt-3 flex items-center justify-center gap-1 w-full py-2.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                    >
+                      <Play className="w-3.5 h-3.5" />
+                      学习本单元语法
+                    </Link>
+                  </div>
+                )}
               </div>
-              <p className="text-xs text-gray-400 mb-2">{mod.topic}</p>
-              {mod.reading && <p className="text-xs text-gray-500 mb-1">📖 {mod.reading}</p>}
-              <div className="flex flex-wrap gap-1 mb-2">
-                {mod.grammar.map((g) => (
-                  <span key={g} className="px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full">{g}</span>
-                ))}
-              </div>
-              {mod.lessons && (
-                <p className="text-xs text-gray-400">{mod.lessons.length} 个课时</p>
-              )}
-            </Link>
-          ))}
+            )
+          })}
         </div>
       </div>
 
