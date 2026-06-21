@@ -49,9 +49,11 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "AI returned invalid JSON" }, { status: 500 })
     }
 
+    // questions在{questions:[...]}包装内
+    const questions = (result.questions as unknown[]) || [result]
     return Response.json({
       success: true,
-      data: result,
+      data: { questions },
       usage: {
         promptTokens: completion.usage?.prompt_tokens,
         completionTokens: completion.usage?.completion_tokens,

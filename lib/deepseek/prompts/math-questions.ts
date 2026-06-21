@@ -20,24 +20,30 @@ export function mathQuestionsPrompt(params: {
 - calculation：计算题（需写出步骤）
 
 ## 输出格式
-请严格返回JSON数组，每个题目一个对象：
-[
-  {
-    "difficulty": "basic|consolidation|advanced",
-    "questionType": "multiple_choice|fill_blank|calculation",
-    "questionText": "题目（Markdown格式，LaTeX数学公式用$...$）",
-    "options": ["A. ...", "B. ...", "C. ...", "D. ..."],  // 仅选择题
-    "correctAnswer": "正确答案",
-    "explanation": "详细解题步骤（分步骤列出，每步解释原理）",
-    "hints": ["提示1：引导思考方向（不给答案）", "提示2：更具体的暗示"],
-    "knowledgeTag": "这道题考察的具体子知识点",
-    "diagram": "几何图形描述JSON（仅几何题需要，非几何题为null）。格式：{ type: 'cube_net'|'number_line'|'triangle'|'angle', ...具体参数 }。cube_net: { type:'cube_net', faces:['上','下','左','前','右','后'] }。number_line: { type:'number_line', from:起始, to:结束, points:[{value:位置, label:'标字'}] }。triangle: { type:'triangle', vertices:['A','B','C'], labels:[{side:'AB', label:'5cm'}] }。angle: { type:'angle', vertex:'O', rays:['A','B'], angle:'45°' }。禁止使用任何图片URL！"
-  }
-]
+返回一个JSON对象，包含questions数组：
+{
+  "questions": [
+    {
+      "difficulty": "basic|consolidation|advanced",
+      "questionType": "multiple_choice|fill_blank|calculation",
+      "questionText": "题目（Markdown格式，LaTeX数学公式用$...$）",
+      "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+      "correctAnswer": "正确答案",
+      "explanation": "详细解题步骤",
+      "hints": ["提示1", "提示2"],
+      "knowledgeTag": "考察的子知识点",
+      "diagram": {}
+    }
+  ]
+}
 
-## 几何图形要求
-几何题必须用diagram字段描述图形参数（JSON格式），不要用SVG或图片URL！
-支持类型：cube_net（展开图）、number_line（数轴）、triangle（三角形）、angle（角）
+## diagram字段说明
+几何题必须填diagram（JSON对象），非几何题设为null。
+- 展开图：{"type":"cube_net","faces":["上","下","左","前","右","后"]}
+- 数轴：{"type":"number_line","from":-3,"to":3,"points":[{"value":-1,"label":"A"}]}
+- 三角形：{"type":"triangle","vertices":["A","B","C"]}
+- 角：{"type":"angle","vertex":"O","rays":["A","B"],"angle":"45°"}
+⚠️ 绝对禁止图片URL！必须用这个diagram JSON格式！
 
 ## 出题原则
 1. 干扰项要合理（反映常见错误认知）
