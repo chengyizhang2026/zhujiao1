@@ -33,9 +33,10 @@ export function mathLearningPrompt(params: {
 - 二级分支展开具体内容（定义、性质、方法、注意事项）
 - 用图标标注重点（🔴重点 ⚠️易错 💡技巧）
 
-## SVG图形
-- 如果知识点涉及几何图形（如正方体展开图、角的概念、线段比较等），在examples中每个例题可附带svgDiagram字段
-- SVG要求：viewBox="0 0 200 200"，黑色描边+浅灰填充，顶点标注字母
+## ⚠️ SVG图形（必读！）
+几何例题必须配真实SVG，禁止占位图URL！示例代码格式：
+正方体：`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="30" width="50" height="50" fill="#f0f0f0" stroke="black" stroke-width="2"/></svg>`
+viewBox="0 0 200 200"，stroke="black" stroke-width="2"，fill="#f0f0f0"，顶点标字母
 
 ## 重要原则
 - 用通俗易懂的中文解释，避免过度的数学术语堆砌

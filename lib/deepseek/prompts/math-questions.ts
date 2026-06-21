@@ -35,14 +35,23 @@ export function mathQuestionsPrompt(params: {
   }
 ]
 
-## SVG图形要求
-- 几何题必须配图！用SVG格式
-- 正方体/长方体：画3D透视草图（三个面可见）
-- 三角形/四边形：标注边长、角度、顶点字母
-- 数轴：画水平线标注关键点和原点
-- 柱体/锥体：画简化的3D示意
-- 线段/角：标注长度和角度符号
+## ⚠️ SVG图形要求（极其重要！）
+几何题必须生成真实SVG代码！禁止使用占位图URL（如placeholder.com）！
+
+以下是SVG格式示例——你必须生成类似这样的代码：
+
+正方体展开图示例：
+`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="40" width="40" height="40" fill="#e8e8e8" stroke="black" stroke-width="2"/><rect x="80" y="40" width="40" height="40" fill="#ddd" stroke="black" stroke-width="2"/><text x="60" y="65" text-anchor="middle" font-size="12">中</text><text x="100" y="65" text-anchor="middle" font-size="12">国</text></svg>`
+
+三角形示例：
+`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><polygon points="100,20 20,180 180,180" fill="#f0f0f0" stroke="black" stroke-width="2"/><text x="100" y="12" text-anchor="middle" font-size="14">A</text><text x="8" y="195" font-size="14">B</text><text x="185" y="195" font-size="14">C</text></svg>`
+
 - viewBox统一用"0 0 200 200"
+- 黑色描边 stroke="black" stroke-width="2"
+- 浅灰填充 fill="#f0f0f0"
+- 顶点用大写字母标注（A、B、C...）
+- 题干中可以写"如图所示"，但必须配svgDiagram
+- ⚠️ 绝对禁止 placeholder.com 或任何外部图片URL！
 
 ## 出题原则
 1. 干扰项要合理（反映常见错误认知）
