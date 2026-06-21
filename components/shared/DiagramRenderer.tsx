@@ -6,7 +6,8 @@
 
 interface CubeNetParams {
   type: "cube_net"
-  grid: (string | null)[][] // 2D网格：null=空，字符串=面上的文字
+  grid?: (string | null)[][] // 新格式：2D网格
+  faces?: string[] // 旧格式：6个面的文字
 }
 
 interface NumberLineParams {
@@ -32,9 +33,20 @@ interface AngleParams {
 type DiagramParams = CubeNetParams | NumberLineParams | TriangleParams | AngleParams
 
 // ============================================================
-// 正方体展开图 — 任意网格布局
+// 正方体展开图 — 兼容grid和faces两种格式
 // ============================================================
-function CubeNet({ grid }: CubeNetParams) {
+function CubeNet({ grid, faces }: CubeNetParams) {
+  // 旧格式faces转换为默认十字网格
+  if (!grid && faces && faces.length === 6) {
+    grid = [
+      [null, faces[0], null],
+      [faces[1], faces[2], faces[3]],
+      [null, faces[4], null],
+      [null, faces[5], null],
+    ]
+  }
+  if (!grid) return null
+
   const cellSize = 52
   const gap = 3
   const rows = grid.length
