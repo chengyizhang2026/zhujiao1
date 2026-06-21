@@ -34,9 +34,8 @@ export function mathLearningPrompt(params: {
 - 用图标标注重点（🔴重点 ⚠️易错 💡技巧）
 
 ## ⚠️ SVG图形（必读！）
-几何例题必须配真实SVG，禁止占位图URL！示例代码格式：
-正方体：`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="30" width="50" height="50" fill="#f0f0f0" stroke="black" stroke-width="2"/></svg>`
-viewBox="0 0 200 200"，stroke="black" stroke-width="2"，fill="#f0f0f0"，顶点标字母
+几何例题必须附带svgDiagram字段，值为真实SVG代码（禁止placeholder.com等占位图URL）
+SVG规范：viewBox="0 0 200 200"，stroke="black" stroke-width="2"，fill="#f0f0f0"，顶点用大写字母标注
 
 ## 重要原则
 - 用通俗易懂的中文解释，避免过度的数学术语堆砌
