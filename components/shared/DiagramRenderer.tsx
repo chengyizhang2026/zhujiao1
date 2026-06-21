@@ -6,7 +6,7 @@
 
 interface CubeNetParams {
   type: "cube_net"
-  faces: string[] // 6个面的文字，顺序：上、下、左、前、右、后
+  grid: (string | null)[][] // 2D网格：null=空，字符串=面上的文字
 }
 
 interface NumberLineParams {
@@ -32,54 +32,34 @@ interface AngleParams {
 type DiagramParams = CubeNetParams | NumberLineParams | TriangleParams | AngleParams
 
 // ============================================================
-// 正方体展开图（11种中的十字形）
+// 正方体展开图 — 任意网格布局
 // ============================================================
-function CubeNet({ faces }: CubeNetParams) {
-  const cell = 56
-  const gap = 2
-  // 十字形展开图布局：
-  //        [0]
-  //   [1] [2] [3] [4]
-  //        [5]
-  const positions = [
-    { x: 1, y: 0 }, // face 0 (上)
-    { x: 0, y: 1 }, // face 1 (左)
-    { x: 1, y: 1 }, // face 2 (前)
-    { x: 2, y: 1 }, // face 3 (右)
-    { x: 3, y: 1 }, // face 4 (最右)
-    { x: 1, y: 2 }, // face 5 (下)
-  ]
+function CubeNet({ grid }: CubeNetParams) {
+  const cellSize = 52
+  const gap = 3
+  const rows = grid.length
+  const cols = Math.max(...grid.map((r) => r.length))
 
-  const svgWidth = 4 * (cell + gap) + gap
-  const svgHeight = 3 * (cell + gap) + gap
+  const svgW = cols * (cellSize + gap) + gap
+  const svgH = rows * (cellSize + gap) + gap
 
   return (
-    <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} className="w-full max-w-[240px] mx-auto">
-      {positions.map((pos, i) => (
-        <g key={i}>
-          <rect
-            x={pos.x * (cell + gap) + gap}
-            y={pos.y * (cell + gap) + gap}
-            width={cell}
-            height={cell}
-            fill="#f5f5f5"
-            stroke="#333"
-            strokeWidth="1.5"
-            rx="2"
-          />
-          <text
-            x={pos.x * (cell + gap) + gap + cell / 2}
-            y={pos.y * (cell + gap) + gap + cell / 2}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fontSize="14"
-            fontWeight="bold"
-            fill="#333"
-          >
-            {faces[i] || ""}
-          </text>
-        </g>
-      ))}
+    <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-[280px] mx-auto">
+      {grid.map((row, ri) =>
+        row.map((cell, ci) => {
+          if (!cell) return null
+          const x = ci * (cellSize + gap) + gap
+          const y = ri * (cellSize + gap) + gap
+          return (
+            <g key={`${ri}-${ci}`}>
+              <rect x={x} y={y} width={cellSize} height={cellSize} fill="#f5f5f5" stroke="#333" strokeWidth="1.5" rx="3" />
+              <text x={x + cellSize / 2} y={y + cellSize / 2} textAnchor="middle" dominantBaseline="central" fontSize="15" fontWeight="bold" fill="#333">
+                {cell}
+              </text>
+            </g>
+          )
+        })
+      )}
     </svg>
   )
 }

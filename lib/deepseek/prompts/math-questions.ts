@@ -39,7 +39,9 @@ export function mathQuestionsPrompt(params: {
 
 ## diagram字段说明
 几何题必须填diagram（JSON对象），非几何题设为null。
-- 展开图：{"type":"cube_net","faces":["上","下","左","前","右","后"]}
+- 展开图：{"type":"cube_net","grid":[["F"],["E","A","C"],["B"],["D"]]}
+  grid是2D数组，每行一个数组，null=空格，字符串=面上的文字
+  必须按题目实际展开图排列！不要用固定的["上","下","左","前","右","后"]
 - 数轴：{"type":"number_line","from":-3,"to":3,"points":[{"value":-1,"label":"A"}]}
 - 三角形：{"type":"triangle","vertices":["A","B","C"]}
 - 角：{"type":"angle","vertex":"O","rays":["A","B"],"angle":"45°"}

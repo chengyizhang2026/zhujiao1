@@ -34,8 +34,11 @@ export function mathLearningPrompt(params: {
 - 用图标标注重点（🔴重点 ⚠️易错 💡技巧）
 
 ## 几何图形
-几何例题用diagram字段（JSON参数描述图形，前端自动渲染），禁止图片URL！
-支持类型：cube_net（展开图，faces数组6个字）、triangle（三角形，vertices三个顶点字母）、number_line（数轴）、angle（角）
+几何例题用diagram字段（JSON对象），禁止图片URL！
+- cube_net：{"type":"cube_net","grid":[["上"],["左","前","右"],["下"]]}，grid是2D数组，按实际排列
+- triangle：{"type":"triangle","vertices":["A","B","C"]}
+- number_line：{"type":"number_line","from":-3,"to":3}
+- angle：{"type":"angle","vertex":"O","rays":["A","B"]}
 
 ## 重要原则
 - 用通俗易懂的中文解释，避免过度的数学术语堆砌
