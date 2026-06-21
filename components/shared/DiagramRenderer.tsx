@@ -47,6 +47,10 @@ function CubeNet({ grid, faces }: CubeNetParams) {
   }
   if (!grid) return null
 
+  // 统计非null单元格数（必须恰好6个面）
+  const faceCount = grid.flat().filter((c) => c !== null && c !== undefined).length
+  const valid = faceCount === 6
+
   const cellSize = 52
   const gap = 3
   const rows = grid.length
@@ -56,23 +60,28 @@ function CubeNet({ grid, faces }: CubeNetParams) {
   const svgH = rows * (cellSize + gap) + gap
 
   return (
-    <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-[280px] mx-auto">
-      {grid.map((row, ri) =>
-        row.map((cell, ci) => {
-          if (!cell) return null
-          const x = ci * (cellSize + gap) + gap
-          const y = ri * (cellSize + gap) + gap
-          return (
-            <g key={`${ri}-${ci}`}>
-              <rect x={x} y={y} width={cellSize} height={cellSize} fill="#f5f5f5" stroke="#333" strokeWidth="1.5" rx="3" />
-              <text x={x + cellSize / 2} y={y + cellSize / 2} textAnchor="middle" dominantBaseline="central" fontSize="15" fontWeight="bold" fill="#333">
-                {cell}
-              </text>
-            </g>
-          )
-        })
+    <>
+      {!valid && (
+        <p className="text-xs text-red-500 text-center mb-1">⚠️ 展开图应有6个面，当前只有{faceCount}个</p>
       )}
-    </svg>
+      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-[280px] mx-auto">
+        {grid.map((row, ri) =>
+          row.map((cell, ci) => {
+            if (!cell) return null
+            const x = ci * (cellSize + gap) + gap
+            const y = ri * (cellSize + gap) + gap
+            return (
+              <g key={`${ri}-${ci}`}>
+                <rect x={x} y={y} width={cellSize} height={cellSize} fill="#f5f5f5" stroke={valid ? "#333" : "red"} strokeWidth="1.5" rx="3" />
+                <text x={x + cellSize / 2} y={y + cellSize / 2} textAnchor="middle" dominantBaseline="central" fontSize="15" fontWeight="bold" fill={valid ? "#333" : "red"}>
+                  {cell}
+                </text>
+              </g>
+            )
+          })
+        )}
+      </svg>
+    </>
   )
 }
 
