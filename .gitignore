@@ -3,6 +3,12 @@
 # dependencies
 /node_modules
 /.pnp
+
+# scripts (may contain credentials)
+/scripts
+
+# env
+.env.local
 .pnp.*
 .yarn/*
 !.yarn/patches
